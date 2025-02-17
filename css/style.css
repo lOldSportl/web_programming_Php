@@ -1,0 +1,34 @@
+.inputSearch {
+   background-color: #FDF4E3; 
+}
+
+.card {
+    background-color: #FDF4E3;
+}
+
+/* Тёмная тема */
+body.dark {
+    background-color: #333333;
+}
+
+.dark .yellow-text {
+    color: yellow;
+}
+
+.dark .search-form button {
+    background-color: yellow;
+    color: #000;
+    outline: none;
+    box-shadow: none;
+}
+
+.dark .card {
+    background-color: yellow;
+}
+
+.search-form input[type="text"] {
+    width: 100px;
+}
+.search-form button {
+    margin-left: 5px;
+}

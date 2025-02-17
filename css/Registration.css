@@ -1,0 +1,32 @@
+.container {
+      max-width: 400px; /* Ширина контейнера */
+}
+
+.form-group {
+  margin-bottom: 10px; /* Отступ между группами элементов формы */
+}
+
+.dark-theme {
+  background-color: #000000; /* Чёрный цвет фона */
+  color: #ffffff; /* Белый цвет текста */
+}
+.dark-theme .card {
+  background-color: #808080; /* Серый цвет фона формы */
+}
+
+/* Стили для формы в темной теме */
+.light-theme {
+  background-color: #ffffff; /* Белый цвет фона */
+  color: #000000; /* Чёрный цвет текста */
+}
+
+#themeToggle {
+  border: none;
+  background-color: transparent;
+  position: absolute; /* Позиционируем абсолютно */
+  top: 20px; /* Отступ сверху */
+  right: 20px; /* Отступ справа */
+}
+
+
+
