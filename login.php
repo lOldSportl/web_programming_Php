@@ -99,50 +99,57 @@ if(isset($_POST['login']) && isset($_POST['password'])) {
     <div class="container-fluid mt-2">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title text-center">Статистика пользователей</h4>
-                        <p>Список фамилий пользователей:</p>
-                        <ul>
-                            <?php
-                            require_once('db.php');
-                            $sql = "SELECT surname FROM Users";
-                            $result = $conn->query($sql);
+                <?php
+require_once('db.php');
 
-                            if ($result->num_rows > 0) {
-                                while($row = $result->fetch_assoc()) {
-                                    echo "<li>" . $row['surname'] . "</li>";
-                                }
-                            } else {
-                                echo "<li>Нет зарегистрированных пользователей</li>";
-                            }
-                            ?>
-                        </ul>
-                        <?php
-                        $sql = "SELECT COUNT(*) as totalRecords FROM Users";
-                        $result = $conn->query($sql);
-                        $row = $result->fetch_assoc();
-                        $totalRecords = $row['totalRecords'];
+// Получение списка пользователей
+$sql = "SELECT surname FROM Users";
+$result = $conn->query($sql);
+$userList = [];
 
-                        $lastMonth = date('Y-m-d H:i:s', strtotime('-1 month'));
-                        $sql = "SELECT COUNT(*) as recordsLastMonth FROM Users WHERE datereg >= '$lastMonth'";
-                        $result = $conn->query($sql);
-                        $row = $result->fetch_assoc();
-                        $recordsLastMonth = $row['recordsLastMonth'];
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $userList[] = $row['surname'];
+    }
+} else {
+    $userList[] = "Нет зарегистрированных пользователей";
+}
 
-                        $sql = "SELECT * FROM Users ORDER BY datereg DESC LIMIT 1";
-                        $result = $conn->query($sql);
-                        $row = $result->fetch_assoc();
-                        $lastRecord = (isset($row['id']) ? " " . $row['id'] : "Нет данных") . 
-                                      (isset($row['login']) ? " " . $row['login'] : "Нет данных") . 
-                                      (isset($row['name']) ? " " . $row['name'] : "Нет данных") . 
-                                      (isset($row['surname']) ? " " . $row['surname'] : "Фамилия: Нет данных");
-                        ?>
-                        <p>Всего сделано записей: <?php echo $totalRecords; ?></p>
-                        <p>За последний месяц создано записей: <?php echo $recordsLastMonth; ?></p>
-                        <p>Последняя запись: <?php echo $lastRecord; ?></p>
-                    </div>
-                </div>
+// Общая статистика
+$sql = "SELECT COUNT(*) as totalRecords FROM Users";
+$totalRecords = $conn->query($sql)->fetch_assoc()['totalRecords'] ?? 0;
+
+$lastMonth = date('Y-m-d H:i:s', strtotime('-1 month'));
+$sql = "SELECT COUNT(*) as recordsLastMonth FROM Users WHERE datereg >= ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $lastMonth);
+$stmt->execute();
+$recordsLastMonth = $stmt->get_result()->fetch_assoc()['recordsLastMonth'] ?? 0;
+$stmt->close();
+
+// Последний зарегистрированный пользователь
+$sql = "SELECT id, login, name, surname FROM Users ORDER BY datereg DESC LIMIT 1";
+$result = $conn->query($sql);
+$lastUser = $result->fetch_assoc();
+$lastRecord = $lastUser ? "#{$lastUser['id']} {$lastUser['login']} {$lastUser['name']} {$lastUser['surname']}" : "Нет данных";
+?>
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title text-center">Статистика пользователей</h4>
+        <p><strong>Список пользователей:</strong></p>
+        <ul>
+            <?php foreach ($userList as $surname): ?>
+                <li><?= htmlspecialchars($surname) ?></li>
+            <?php endforeach; ?>
+        </ul>
+        <hr>
+        <p><strong>Всего пользователей:</strong> <?= $totalRecords ?></p>
+        <p><strong>Зарегистрировано за последний месяц:</strong> <?= $recordsLastMonth ?></p>
+        <p><strong>Последний зарегистрированный пользователь:</strong> <?= htmlspecialchars($lastRecord) ?></p>
+    </div>
+</div>
+
             </div>
         </div>
     </div>
@@ -184,7 +191,7 @@ document.getElementById('themeToggle').addEventListener('click', function() {
             if (xhr.responseText === 'success') {
                 document.body.className = newTheme; // Устанавливаем новый класс темы после успешного обновления на сервере
             } else {
-                alert('Произошла ошибка при обновлении темы.');
+                //alert('Произошла ошибка при обновлении темы.');
             }
         }
     };

@@ -1,34 +1,92 @@
+/* Основные стили */
 .inputSearch {
-   background-color: #FDF4E3; 
+    background-color: #d8d8d8;
+    color: #dcdcdc;
+    border: 1px solid #555;
+    padding: 10px;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.inputSearch:focus {
+    border-color: #8ab6d6;
+    box-shadow: 0 0 8px rgba(138, 182, 214, 0.7);
 }
 
 .card {
-    background-color: #FDF4E3;
+    background-color: #d8d8d8;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Тёмная тема */
 body.dark {
-    background-color: #333333;
+    background-color: #1a1a1a;
+    color: #cfcfcf;
 }
 
 .dark .yellow-text {
-    color: yellow;
+    color: #8ab6d6;
 }
 
 .dark .search-form button {
-    background-color: yellow;
-    color: #000;
-    outline: none;
-    box-shadow: none;
+    background-color: #4a6374;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.dark .search-form button:hover {
+    background-color: #6d8698;
 }
 
 .dark .card {
-    background-color: yellow;
+    background-color: #2a2a2a;
+    color: #dcdcdc;
+    border: 1px solid #6d8698;
+}
+
+.search-form {
+    /*display: flex;
+    align-items: center;*/
 }
 
 .search-form input[type="text"] {
-    width: 100px;
+    width: 200px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #666;
+    outline: none;
+    transition: all 0.3s ease-in-out;
 }
+
+.search-form input[type="text"]:focus {
+    border-color: #8ab6d6;
+    box-shadow: 0 0 8px rgba(138, 182, 214, 0.7);
+}
+
 .search-form button {
-    margin-left: 5px;
+    margin-left: 10px;
+    padding: 10px 15px;
+    background-color: #4a6374;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-form button:hover {
+    background-color: #6d8698;
 }
